@@ -1,0 +1,18 @@
+{
+  "telegram_bot_token": "BURAYA_BOT_TOKEN",
+  "telegram_chat_id": "BURAYA_KANAL_ID",
+  "semboller": [],
+  "sembol_adlari": {},
+  "lot_goster": false,
+  "pip_goster": true,
+  "bekleyen_emirler": true,
+  "kapanislari_bildir": true,
+  "sessiz_bildirim": false,
+  "yoklama_ms": 50,
+  "birlestirme_ms": 300,
+  "ek_giris_saniye": 30,
+  "mt5_yolu": "",
+  "mt5_login": 0,
+  "mt5_sifre": "",
+  "mt5_sunucu": ""
+}

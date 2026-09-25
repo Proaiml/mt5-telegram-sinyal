@@ -1,0 +1,7 @@
+config.json
+durum.json
+durum.json.tmp
+log.txt
+log.eski.txt
+__pycache__/
+*.pyc
