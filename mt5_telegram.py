@@ -688,7 +688,12 @@ class Takipci:
 
 
 # ---------------------------------------------------------------- calistirma
-def tek_ornek_kilidi(port: int = 47931) -> socket.socket:
+def tek_ornek_kilidi(port: int | None = None) -> socket.socket:
+    """Ayni klasorden ikinci kopyayi engeller; farkli klasorlerdeki kopyalar
+    (farkli kanallar) birbirini engellemez."""
+    if port is None:
+        import zlib
+        port = 47000 + zlib.crc32(str(KLASOR).lower().encode("utf-8")) % 2000
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     try:
         if hasattr(socket, "SO_EXCLUSIVEADDRUSE"):
@@ -776,8 +781,16 @@ def test_mesaji() -> int:
     if sonuc.get("ok"):
         print("Test mesaji gonderildi.")
         return 0
-    print(f"Gonderilemedi: {sonuc.get('error_code')} {sonuc.get('description')}")
-    print("Kontrol: bot kanala yonetici olarak eklendi mi, chat_id dogru mu (-100... ile baslar)?")
+    kod = int(sonuc.get("error_code") or 0)
+    print(f"Gonderilemedi: {kod} {sonuc.get('description')}")
+    if kod in (401, 404):
+        print("-> Bot token'i hatali. BotFather'dan aldiginiz token'i config.json'a tam olarak yapistirin.")
+    elif kod == 400:
+        print("-> Kanal bulunamadi. telegram_chat_id dogru mu? Ozel kanal ID'si -100 ile baslar.")
+    elif kod == 403:
+        print("-> Botun kanala mesaj atma izni yok. Botu kanala YONETICI olarak ekleyin.")
+    else:
+        print("-> Internet baglantisini ve config.json icerigini kontrol edin.")
     return 1
 
 
